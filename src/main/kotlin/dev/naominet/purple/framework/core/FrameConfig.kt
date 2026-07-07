@@ -6,9 +6,9 @@ import dev.naominet.purple.framework.embedded.EmbeddedPlugin
 data class FrameConfig(
     override val configId: String = "purple-framework-config",
     /**
-     * Supported protocol:HTTPClient, HTTPServer, WebsocketServer, WebsocketClient
+     * Supported protocol: WebsocketServer, WebsocketClient
      **/
-    val protocol: String = "HTTPServer",
+    val protocol: String = "WebsocketClient",
     /**
      * Remote OneBot address. Used by client transports and by HTTPServer mode when calling HTTP API.
      **/
@@ -21,10 +21,6 @@ data class FrameConfig(
      * Transport path. For HTTPServer mode this is the event report path exposed by this framework.
      **/
     val path: String = "/",
-    /**
-     * Local HTTP port used by HTTPServer mode to receive OneBot event reports.
-     **/
-    val listenPort: Int = 8080,
     val encoding: String = "UTF-8",
     val debugOutput: Boolean = false,
     val embeddedPlugin: Boolean = true,
