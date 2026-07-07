@@ -43,7 +43,7 @@ class EmbeddedPlugin: IPlugin {
                     as com.sun.management.OperatingSystemMXBean
             sb.append("CPU Load: ${"%.1f".format(bean.cpuLoad * 100)}%"+"\n")
             sb.toString().lineSequence().maxByOrNull { it.length }?.let {
-                for(i in 0 until it.length){
+                for(i in it.indices){
                     sb.append("--")
                 }
             }

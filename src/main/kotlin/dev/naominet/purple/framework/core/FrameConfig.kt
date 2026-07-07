@@ -10,11 +10,21 @@ data class FrameConfig(
      **/
     val protocol: String = "HTTPServer",
     /**
-     * Only needed when using client mode
+     * Remote OneBot address. Used by client transports and by HTTPServer mode when calling HTTP API.
      **/
     val address: String = "127.0.0.1",
-    val port: Int = 8080,
+    /**
+     * Remote OneBot port. Used by client transports and by HTTPServer mode when calling HTTP API.
+     **/
+    val port: Int = 5700,
+    /**
+     * Transport path. For HTTPServer mode this is the event report path exposed by this framework.
+     **/
     val path: String = "/",
+    /**
+     * Local HTTP port used by HTTPServer mode to receive OneBot event reports.
+     **/
+    val listenPort: Int = 8080,
     val encoding: String = "UTF-8",
     val debugOutput: Boolean = false,
     val embeddedPlugin: Boolean = true,

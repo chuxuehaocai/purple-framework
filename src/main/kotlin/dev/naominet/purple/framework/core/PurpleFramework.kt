@@ -8,8 +8,6 @@ import dev.naominet.purple.framework.core.plugin.PluginManager
 import dev.naominet.purple.framework.event.EventManager
 import dev.naominet.purple.framework.logger.Logger
 import dev.naominet.purple.framework.transport.ITransport
-import dev.naominet.purple.framework.transport.impl.HTTPClient
-import dev.naominet.purple.framework.transport.impl.HTTPServer
 import dev.naominet.purple.framework.transport.impl.WebsocketClient
 import dev.naominet.purple.framework.transport.impl.WebsocketServer
 import java.nio.charset.Charset
@@ -32,18 +30,12 @@ object PurpleFramework {
             Logger.log("Trying to connect to the target by using ${configuration.protocol} protocol...", this.javaClass)
             if(configuration.protocol == "WebsocketClient"){
                 transport = WebsocketClient(configuration.address, configuration.port, configuration.path)
+
             }
             if(configuration.protocol == "WebsocketServer"){
                 transport = WebsocketServer(configuration.port, configuration.path)
             }
-            if(configuration.protocol == "HTTPServer"){
-                transport = HTTPServer(configuration.port, configuration.path)
-            }
-            if (configuration.protocol == "HTTPClient"){
-                transport = HTTPClient(configuration.address, configuration.port, configuration.path)
-            }
             transport.connect()
-            Logger.log("Purple framework connected.", this.javaClass)
 
             originEventListener()
             CountDownLatch(1).await()
@@ -72,7 +64,7 @@ object PurpleFramework {
     fun checkConfiguration(): Boolean {
         Logger.log("Checking configuration...", this.javaClass)
 
-        val supportedProtocols = listOf("WebsocketClient", "WebsocketServer", "HTTPServer", "HTTPClient")
+        val supportedProtocols = listOf("WebsocketClient", "WebsocketServer")
         if (configuration.protocol !in supportedProtocols) {
             throw IllegalArgumentException("Protocol is illegal. Support: ${supportedProtocols.joinToString(", ")}.")
         }
