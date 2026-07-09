@@ -45,17 +45,25 @@ object PurpleFramework {
     fun originEventListener() {
         transport.onReceiveData.listen { data ->
             run {
-                Logger.debug("Received data: ${data.toString(Charset.forName(configuration.encoding))}", this.javaClass)
-                val json = data.toString(Charset.forName(configuration.encoding))
-                val bean = JSON.parseObject(json).to<TextMessageBean>()
+                try {
+                    Logger.debug(
+                        "Received data: ${data.toString(Charset.forName(configuration.encoding))}",
+                        this.javaClass
+                    )
+                    val json = data.toString(Charset.forName(configuration.encoding))
+                    val bean = JSON.parseObject(json).to<TextMessageBean>()
 
-                when (bean.message_type){
-                    "group" -> {
-                        EventManager.groupMessageEvent.emit(bean)
+                    when (bean.message_type) {
+                        "group" -> {
+                            EventManager.groupMessageEvent.emit(bean)
+                        }
+
+                        "private" -> {
+                            EventManager.privateMessageEvent.emit(bean)
+                        }
                     }
-                    "private" -> {
-                        EventManager.privateMessageEvent.emit(bean)
-                    }
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
             }
         }

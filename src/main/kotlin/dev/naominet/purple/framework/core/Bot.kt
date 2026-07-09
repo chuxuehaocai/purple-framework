@@ -1,6 +1,7 @@
 package dev.naominet.purple.framework.core
 
 import com.alibaba.fastjson2.JSON
+import dev.naominet.purple.framework.utils.MessageBuilder
 import java.nio.charset.Charset
 
 object Bot {
@@ -22,7 +23,7 @@ object Bot {
     fun sendPrivateMessage(userId: Long, msg: String, autoEscaped: Boolean = false) {
         val json = JSON.toJSONString(
             mapOf(
-                "action" to "send_group_msg",
+                "action" to "send_private_msg",
                 "params" to mapOf(
                     "user_id" to userId,
                     "message" to msg,

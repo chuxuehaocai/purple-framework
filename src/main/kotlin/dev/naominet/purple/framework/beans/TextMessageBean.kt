@@ -13,7 +13,7 @@ data class TextMessageBean(
     val raw_message: String = "",
     val font: Int = 0,
     val sub_type: String = "",
-    val message: List<TextMessageSegmentBean> = emptyList(),
+    val message: List<Any> = emptyList(),
     val message_format: String = "",
     val post_type: String = "",
     val group_id: Long = 0,
