@@ -5,7 +5,7 @@ plugins {
 val ktorVersion = "3.3.2"
 val fastjsonVersion = "2.0.60"
 
-group = "dev.reicode"
+group = "dev.naominet"
 version = "1.0-SNAPSHOT"
 
 repositories {
