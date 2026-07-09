@@ -1,7 +1,6 @@
 package dev.naominet.purple.framework.core
 
 import dev.naominet.purple.framework.config.IConfig
-import dev.naominet.purple.framework.embedded.EmbeddedPlugin
 
 data class FrameConfig(
     override val configId: String = "purple-framework-config",
@@ -24,4 +23,5 @@ data class FrameConfig(
     val encoding: String = "UTF-8",
     val debugOutput: Boolean = false,
     val embeddedPlugin: Boolean = true,
+    val connectToken: String = "",
 ) : IConfig

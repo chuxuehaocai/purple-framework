@@ -1,6 +1,5 @@
 package dev.naominet.purple.framework.logger
 
-import dev.naominet.purple.framework.config.ConfigManager
 import dev.naominet.purple.framework.core.PurpleFramework
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

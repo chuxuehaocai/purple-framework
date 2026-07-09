@@ -1,7 +1,6 @@
 package dev.naominet.purple.framework.config
 
 import com.alibaba.fastjson2.JSON
-import com.alibaba.fastjson2.JSONObject
 import com.alibaba.fastjson2.JSONWriter
 import com.alibaba.fastjson2.to
 import dev.naominet.purple.framework.logger.Logger
@@ -18,15 +17,16 @@ object ConfigManager {
 
         val configFile = File(configDirectory, "${dataConfig.configId}.json")
         val defaultConfigObject = JSON.parseObject(JSON.toJSONString(dataConfig))
+        defaultConfigObject.remove("configId")
         if (!configFile.exists()) {
-            configFile.writeText(JSON.toJSONString(dataConfig, JSONWriter.Feature.PrettyFormat))
+            configFile.writeText(JSON.toJSONString(defaultConfigObject, JSONWriter.Feature.PrettyFormat))
             configs.add(dataConfig)
             Logger.log("Config file does not exist: ${dataConfig.configId}, created a new one.", this.javaClass)
             return dataConfig
         }
 
         val configObject = JSON.parseObject(configFile.readText())
-        var changed = false
+        var changed = configObject.remove("configId") != null
         for (entry in defaultConfigObject) {
             if (!configObject.containsKey(entry.key)) {
                 configObject[entry.key] = entry.value

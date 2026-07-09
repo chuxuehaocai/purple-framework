@@ -6,9 +6,10 @@ import dev.naominet.purple.framework.transport.ITransport
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.client.request.header
 import io.ktor.websocket.Frame
-import io.ktor.websocket.readBytes
 import io.ktor.websocket.readText
 import io.ktor.websocket.send
 import kotlinx.coroutines.CompletableDeferred
@@ -18,9 +19,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class WebsocketClient(val host: String, val port: Int, val path: String) : ITransport {
+class WebsocketClient(val host: String, val port: Int, val path: String, val connectToken: String = "") : ITransport {
     private val client = HttpClient(CIO) {
-        install(io.ktor.client.plugins.websocket.WebSockets)
+        install(WebSockets)
     }
     override val onReceiveData = Event<ByteArray>()
     private val scope = CoroutineScope(Dispatchers.IO)
@@ -33,7 +34,11 @@ class WebsocketClient(val host: String, val port: Int, val path: String) : ITran
 
         receiveJob = scope.launch {
             try {
-                client.webSocket(host = host, port = port, path = path) {
+                client.webSocket(host = host, port = port, path = path, request = {
+                    if (connectToken.isNotBlank()) {
+                        header("Authorization", "Bearer $connectToken")
+                    }
+                }) {
                     session = this
                     connected.complete(Unit)
                     Logger.log("Connected to ws://$host:$port$path", this.javaClass)

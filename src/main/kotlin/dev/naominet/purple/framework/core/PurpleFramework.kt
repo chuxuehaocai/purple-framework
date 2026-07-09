@@ -29,7 +29,7 @@ object PurpleFramework {
             PluginManager.init()
             Logger.log("Trying to connect to the target by using ${configuration.protocol} protocol...", this.javaClass)
             if(configuration.protocol == "WebsocketClient"){
-                transport = WebsocketClient(configuration.address, configuration.port, configuration.path)
+                transport = WebsocketClient(configuration.address, configuration.port, configuration.path, configuration.connectToken)
 
             }
             if(configuration.protocol == "WebsocketServer"){

@@ -1,18 +1,12 @@
 package dev.naominet.purple.framework.embedded
 
-import com.alibaba.fastjson2.JSON
 import dev.naominet.purple.framework.beans.TextMessageBean
 import dev.naominet.purple.framework.core.Bot
-import dev.naominet.purple.framework.core.PurpleFramework
 import dev.naominet.purple.framework.core.plugin.IPlugin
 import dev.naominet.purple.framework.core.plugin.PluginInfomation
 import dev.naominet.purple.framework.event.EventManager
-import dev.naominet.purple.framework.logger.Logger
 import dev.naominet.purple.framework.utils.MessageBuilder
-import io.ktor.utils.io.charsets.forName
 import java.lang.management.ManagementFactory
-import java.net.URI
-import kotlin.random.Random
 
 class EmbeddedPlugin: IPlugin {
     override val info: PluginInfomation
