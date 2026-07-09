@@ -4,9 +4,7 @@ Purple Framework 是一个使用 Kotlin/JVM 编写的机器人框架，当前主
 
 ## 特性
 
-- 支持多种传输协议：
-  - `HTTPClient`
-  - `HTTPServer`
+- 支持的传输协议：
   - `WebsocketClient`
   - `WebsocketServer`
 - 基于事件的消息分发
@@ -241,20 +239,3 @@ src/main/kotlin/dev/naominet/purple/framework/embedded/EmbeddedPlugin.kt
 ```
 
 当配置项 `embeddedPlugin` 为 `true` 时会加载。当前内置插件会监听群消息，并对部分命令返回框架状态信息。
-
-## 目录结构
-
-```text
-src/main/kotlin/dev/naominet/purple/framework/
-├── EntryPoint.kt              # 程序入口
-├── beans/                     # 消息数据模型
-├── config/                    # 配置加载与配置接口
-├── core/                      # 框架核心、Bot、配置模型
-│   └── plugin/                # 插件接口和插件管理器
-├── embedded/                  # 内置插件
-├── event/                     # 事件系统
-├── logger/                    # 日志输出
-├── transport/                 # 传输接口
-│   └── impl/                  # HTTP/WebSocket 传输实现
-└── utils/                     # 工具类
-```
