@@ -31,16 +31,20 @@ class MessageBuilder {
     }
 
     fun reply(targetMsgId: Long): MessageBuilder {
-        sb.append("[CQ:reply,id=$targetMsgId] ")
+        sb.append("[CQ:reply,id=$targetMsgId]")
         return this
     }
 
     fun replyGroup(targetMsgId: Long, message: String): MessageBuilder {
-        sb.append("[CQ:reply,id=${targetMsgId}] $message")
+        sb.append("[CQ:reply,id=${targetMsgId}]$message")
         return this
     }
 
-    fun build(): String = sb.toString()
+    fun build(): String {
+        val temp = sb.toString()
+        sb.clear()
+        return temp
+    }
 
     override fun toString(): String = sb.toString()
 }
