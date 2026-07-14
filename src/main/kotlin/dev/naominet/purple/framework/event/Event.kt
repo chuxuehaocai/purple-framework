@@ -7,10 +7,10 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.CopyOnWriteArrayList
 
 class Event<T> {
-    private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
+    private val listeners = CopyOnWriteArrayList<suspend (T) -> Unit>()
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    fun listen(listener: (T) -> Unit): AutoCloseable {
+    fun listen(listener: suspend (T) -> Unit): AutoCloseable {
         listeners.add(listener)
         return AutoCloseable { listeners.remove(listener) }
     }
