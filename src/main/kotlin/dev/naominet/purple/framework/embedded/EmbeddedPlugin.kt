@@ -11,10 +11,17 @@ import java.lang.management.ManagementFactory
 class EmbeddedPlugin: IPlugin {
     override val info: PluginInfomation
         get() = PluginInfomation("framework-embedded-plugin")
+    private var groupListener: AutoCloseable? = null
 
     override fun start(): IPlugin {
-        EventManager.groupMessageEvent.listen { event -> listener(event) }
+        groupListener?.close()
+        groupListener = EventManager.groupMessageEvent.listen { event -> listener(event) }
         return this
+    }
+
+    override fun stop() {
+        groupListener?.close()
+        groupListener = null
     }
 
     fun formatBytes(bytes: Long): String {

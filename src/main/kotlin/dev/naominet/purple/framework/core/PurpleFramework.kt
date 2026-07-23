@@ -7,6 +7,7 @@ import dev.naominet.purple.framework.config.ConfigManager
 import dev.naominet.purple.framework.core.plugin.PluginManager
 import dev.naominet.purple.framework.event.EventManager
 import dev.naominet.purple.framework.logger.Logger
+import dev.naominet.purple.framework.panel.FrameworkPanel
 import dev.naominet.purple.framework.transport.ITransport
 import dev.naominet.purple.framework.transport.impl.WebsocketClient
 import dev.naominet.purple.framework.transport.impl.WebsocketServer
@@ -27,6 +28,7 @@ object PurpleFramework {
         if(checkConfiguration()) {
             Logger.log("Trying to load plugins...", this.javaClass)
             PluginManager.init()
+            FrameworkPanel.start(configuration.panelPort)
             Logger.log("Trying to connect to the target by using ${configuration.protocol} protocol...", this.javaClass)
             if(configuration.protocol == "WebsocketClient"){
                 transport = WebsocketClient(configuration.address, configuration.port, configuration.path, configuration.connectToken)
@@ -83,6 +85,10 @@ object PurpleFramework {
 
         if (configuration.protocol.endsWith("Server") && configuration.port !in 1..65535) {
             throw IllegalArgumentException("Port is illegal. Server mode requires a port between 1 and 65535.")
+        }
+
+        if (configuration.panelPort !in 1..65535) {
+            throw IllegalArgumentException("Panel port is illegal. Panel requires a port between 1 and 65535.")
         }
 
         if (!configuration.path.startsWith("/")) {

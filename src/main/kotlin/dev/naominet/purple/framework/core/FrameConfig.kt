@@ -24,4 +24,5 @@ data class FrameConfig(
     val debugOutput: Boolean = false,
     val embeddedPlugin: Boolean = true,
     val connectToken: String = "",
+    val panelPort: Int = 8086,
 ) : IConfig
