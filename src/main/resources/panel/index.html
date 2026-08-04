@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>运行概览 · Purple Framework Panel</title>
+  <link rel="stylesheet" href="/panel.css">
+</head>
+<body data-page="overview">
+<a class="skip-link" href="#main">跳到主要内容</a>
+<div class="app-shell">
+  <aside class="nav-rail" aria-label="主导航">
+    <div class="brand" aria-label="Purple Framework">P</div>
+    <a class="nav-item active" href="/" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg>
+      <span>概览</span>
+    </a>
+    <a class="nav-item" href="/plugins">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a1.5 1.5 0 1 0-3 0V5H7a2 2 0 0 0-2 2v3H3.5a1.5 1.5 0 1 0 0 3H5v4a2 2 0 0 0 2 2h3v1.5a1.5 1.5 0 1 0 3 0V19h4a2 2 0 0 0 2-2v-3h1.5a1.5 1.5 0 1 0 0-3ZM17 17H7V7h10v10Z"/></svg>
+      <span>插件</span>
+    </a>
+    <a class="loop-entry" href="/loop" aria-label="打开 Loop Web 开发环境">
+      <span class="loop-orbit" aria-hidden="true"><i></i></span>
+      <strong>Loop</strong>
+      <small>create</small>
+    </a>
+  </aside>
+
+  <main id="main">
+    <header class="top-bar">
+      <div>
+        <span class="eyebrow">Framework control surface</span>
+        <h1>Framework 运行概览</h1>
+      </div>
+      <div class="connection" id="connection"><span></span>正在观测</div>
+    </header>
+
+    <section class="system-strip" aria-labelledby="system-title">
+      <div>
+        <span class="eyebrow">Observed runtime</span>
+        <h2 id="system-title">正在读取运行状态</h2>
+      </div>
+      <div class="strip-tick" aria-hidden="true"></div>
+      <time id="observedAt">—</time>
+    </section>
+
+    <section class="metrics" aria-label="运行指标">
+      <article><span>进程运行</span><strong id="uptime">—</strong><small>自 Panel 启动</small></article>
+      <article><span>内存</span><strong id="memory">—</strong><small id="memoryDetail">JVM heap</small></article>
+      <article><span>CPU</span><strong id="cpu">—</strong><small id="processors">系统负载</small></article>
+      <article><span>插件在线</span><strong id="pluginMetric">—</strong><small>已启用 / 已发现</small></article>
+    </section>
+
+    <section class="overview-actions" aria-labelledby="manage-title">
+      <div><span class="eyebrow">Plugin lifecycle</span><h2 id="manage-title">管理插件运行状态</h2><p class="section-copy">在独立的 Plugin Manager 中查看来源、错误状态，并热启用或热禁用插件。</p></div>
+      <a class="filled-button" href="/plugins">打开 Plugin Manager</a>
+    </section>
+  </main>
+</div>
+<div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+<script src="/panel.js" defer></script>
+</body>
+</html>

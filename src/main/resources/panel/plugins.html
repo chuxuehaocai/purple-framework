@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Plugin Manager · Purple Framework Panel</title>
+  <link rel="stylesheet" href="/panel.css">
+</head>
+<body data-page="plugins">
+<a class="skip-link" href="#main">跳到主要内容</a>
+<div class="app-shell">
+  <aside class="nav-rail" aria-label="主导航">
+    <div class="brand" aria-label="Purple Framework">P</div>
+    <a class="nav-item" href="/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg>
+      <span>概览</span>
+    </a>
+    <a class="nav-item active" href="/plugins" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a1.5 1.5 0 1 0-3 0V5H7a2 2 0 0 0-2 2v3H3.5a1.5 1.5 0 1 0 0 3H5v4a2 2 0 0 0 2 2h3v1.5a1.5 1.5 0 1 0 3 0V19h4a2 2 0 0 0 2-2v-3h1.5a1.5 1.5 0 1 0 0-3ZM17 17H7V7h10v10Z"/></svg>
+      <span>插件</span>
+    </a>
+    <a class="loop-entry" href="/loop" aria-label="打开 Loop Web 开发环境">
+      <span class="loop-orbit" aria-hidden="true"><i></i></span>
+      <strong>Loop</strong>
+      <small>create</small>
+    </a>
+  </aside>
+
+  <main id="main">
+    <header class="top-bar">
+      <div>
+        <span class="eyebrow">Live module registry</span>
+        <h1>Plugin Manager</h1>
+      </div>
+      <div class="connection" id="connection"><span></span>正在观测</div>
+    </header>
+
+    <section class="plugin-summary" aria-label="插件摘要">
+      <div><span>已启用</span><strong id="enabledPluginCount">—</strong></div>
+      <div><span>已发现</span><strong id="discoveredPluginCount">—</strong></div>
+      <time id="observedAt">—</time>
+    </section>
+
+    <section class="plugins-section" aria-labelledby="plugins-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Runtime controls</span><h2 id="plugins-title">插件运行状态</h2></div>
+        <button class="tonal-button" id="refresh" type="button">刷新观测</button>
+      </div>
+      <p class="section-copy">开关表达你的请求；状态文字表达 Framework 实际确认的结果。切换时只锁定当前插件。</p>
+      <div class="plugin-list" id="pluginList" aria-live="polite"><div class="loading">正在发现插件…</div></div>
+    </section>
+  </main>
+</div>
+<div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+<script src="/panel.js" defer></script>
+</body>
+</html>
