@@ -1,7 +1,9 @@
 package dev.naominet.purple.framework.core
 
 import dev.naominet.purple.framework.config.IConfig
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class FrameConfig(
     override val configId: String = "purple-framework-config",
     /**

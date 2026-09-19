@@ -1,7 +1,5 @@
 package dev.naominet.purple.framework.panel
 
-import com.alibaba.fastjson2.JSON
-import com.alibaba.fastjson2.JSONObject
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpServer
 import dev.naominet.purple.framework.core.PurpleFramework
@@ -14,6 +12,14 @@ import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.util.concurrent.Executors
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 object FrameworkPanel {
     private val startedAt = System.currentTimeMillis()
@@ -88,7 +94,7 @@ object FrameworkPanel {
         sendJson(exchange, 200, pluginJson(state))
     }
 
-    private fun status(): JSONObject {
+    private fun status(): JsonObject {
         val runtime = Runtime.getRuntime()
         val usedMemory = runtime.totalMemory() - runtime.freeMemory()
         val os = ManagementFactory.getOperatingSystemMXBean()
@@ -109,12 +115,12 @@ object FrameworkPanel {
         )
     }
 
-    private fun plugins(): JSONObject = jsonOf(
+    private fun plugins(): JsonObject = jsonOf(
         "plugins" to PluginManager.states().map(::pluginJson),
         "observedAt" to Instant.now().toString(),
     )
 
-    private fun pluginJson(state: PluginManager.PluginState): JSONObject = jsonOf(
+    private fun pluginJson(state: PluginManager.PluginState): JsonObject = jsonOf(
         "id" to state.id,
         "source" to state.source,
         "enabled" to state.enabled,
@@ -144,10 +150,10 @@ object FrameworkPanel {
         sendJson(exchange, 405, jsonOf("error" to "method_not_allowed"))
     }
 
-    private fun sendJson(exchange: HttpExchange, status: Int, body: JSONObject) =
-        send(exchange, status, "application/json; charset=utf-8", JSON.toJSONBytes(body))
+    private fun sendJson(exchange: HttpExchange, status: Int, body: JsonObject) =
+        send(exchange, status, "application/json; charset=utf-8", Json.encodeToString(body).toByteArray(StandardCharsets.UTF_8))
 
-    private fun sendJsonSafely(exchange: HttpExchange, status: Int, body: JSONObject) {
+    private fun sendJsonSafely(exchange: HttpExchange, status: Int, body: JsonObject) {
         runCatching { sendJson(exchange, status, body) }
     }
 
@@ -157,8 +163,17 @@ object FrameworkPanel {
         exchange.responseBody.use { it.write(body) }
     }
 
-    private fun jsonOf(vararg values: Pair<String, Any?>): JSONObject = JSONObject().apply {
-        values.forEach { (key, value) -> put(key, value) }
+    private fun jsonOf(vararg values: Pair<String, Any?>): JsonObject = buildJsonObject {
+        values.forEach { (key, value) -> put(key, value.toJsonElement()) }
+    }
+
+    private fun Any?.toJsonElement(): JsonElement = when (this) {
+        null -> JsonNull
+        is JsonElement -> this
+        is String -> JsonPrimitive(this)
+        is Boolean -> JsonPrimitive(this)
+        is Number -> JsonPrimitive(this)
+        else -> JsonPrimitive(toString())
     }
 
     private fun newExecutor() = Executors.newFixedThreadPool(4) { task ->

@@ -1,7 +1,5 @@
 package dev.naominet.purple.framework.core
 
-import com.alibaba.fastjson2.JSON
-import com.alibaba.fastjson2.to
 import dev.naominet.purple.framework.beans.TextMessageBean
 import dev.naominet.purple.framework.config.ConfigManager
 import dev.naominet.purple.framework.core.plugin.PluginManager
@@ -13,9 +11,12 @@ import dev.naominet.purple.framework.transport.impl.WebsocketClient
 import dev.naominet.purple.framework.transport.impl.WebsocketServer
 import java.nio.charset.Charset
 import java.util.concurrent.CountDownLatch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 object PurpleFramework {
-    val version = "alpha 0.0.1"
+    private val jsonCodec = Json { ignoreUnknownKeys = true }
+    val version = "1.0.1"
     lateinit var configuration: FrameConfig
     lateinit var transport: ITransport
 
@@ -53,7 +54,7 @@ object PurpleFramework {
                         this.javaClass
                     )
                     val json = data.toString(Charset.forName(configuration.encoding))
-                    val bean = JSON.parseObject(json).to<TextMessageBean>()
+                    val bean = jsonCodec.decodeFromString<TextMessageBean>(json)
 
                     when (bean.message_type) {
                         "group" -> {

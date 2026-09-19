@@ -1,12 +1,21 @@
 package dev.naominet.purple.framework.config
 
-import com.alibaba.fastjson2.JSON
-import com.alibaba.fastjson2.JSONWriter
-import com.alibaba.fastjson2.to
 import dev.naominet.purple.framework.logger.Logger
 import java.io.File
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.jsonObject
 
 object ConfigManager {
+    @PublishedApi
+    internal val json = Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+        prettyPrint = true
+    }
+
     val configDirectory = File("configs")
     val configs = mutableListOf<IConfig>()
 
@@ -16,16 +25,16 @@ object ConfigManager {
         }
 
         val configFile = File(configDirectory, "${dataConfig.configId}.json")
-        val defaultConfigObject = JSON.parseObject(JSON.toJSONString(dataConfig))
+        val defaultConfigObject = json.encodeToJsonElement(dataConfig).jsonObject.toMutableMap()
         defaultConfigObject.remove("configId")
         if (!configFile.exists()) {
-            configFile.writeText(JSON.toJSONString(defaultConfigObject, JSONWriter.Feature.PrettyFormat))
+            configFile.writeText(json.encodeToString(JsonObject(defaultConfigObject)))
             configs.add(dataConfig)
             Logger.log("Config file does not exist: ${dataConfig.configId}, created a new one.", this.javaClass)
             return dataConfig
         }
 
-        val configObject = JSON.parseObject(configFile.readText())
+        val configObject = json.parseToJsonElement(configFile.readText()).jsonObject.toMutableMap()
         var changed = configObject.remove("configId") != null
         for (entry in defaultConfigObject) {
             if (!configObject.containsKey(entry.key)) {
@@ -36,11 +45,11 @@ object ConfigManager {
         }
 
         if (changed) {
-            configFile.writeText(JSON.toJSONString(configObject, JSONWriter.Feature.PrettyFormat))
+            configFile.writeText(json.encodeToString(JsonObject(configObject)))
             Logger.log("Config ${dataConfig.configId} has been completed and saved.", this.javaClass)
         }
 
-        val config = configObject.to<T>()
+        val config = json.decodeFromJsonElement<T>(JsonObject(configObject))
         configs.add(config)
         Logger.log("Loaded config file: $configFile", this.javaClass)
         return config

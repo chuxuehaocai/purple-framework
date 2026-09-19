@@ -1,15 +1,16 @@
 plugins {
     kotlin("jvm") version "2.3.21"
+    kotlin("plugin.serialization") version "2.3.21"
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
 }
 
 val ktorVersion = "3.3.2"
-val fastjsonVersion = "2.0.60"
+val kotlinxSerializationVersion = "1.11.0"
 
 group = "dev.naominet"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -22,7 +23,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-    implementation("com.alibaba.fastjson2:fastjson2-kotlin:$fastjsonVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
     testImplementation(kotlin("test"))
 }
 
